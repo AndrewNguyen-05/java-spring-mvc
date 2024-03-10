@@ -1,4 +1,4 @@
-package vn.hoidanit.laptopshop.controller;
+package vn.hoidanit.laptopshop.controller.admin;
 
 import vn.hoidanit.laptopshop.domain.User;
 import vn.hoidanit.laptopshop.service.UserService;
@@ -27,26 +27,24 @@ public class UserController {
         return "hello";
     }
     
+    @RequestMapping("/admin/user")
+    public String getUserPage(Model model){
+        List<User> users = this.userService.getAllUsers();
+        model.addAttribute("users", users);
+        return "/admin/user/show";
+    }
+
     @RequestMapping("/admin/user/{id}")
     public String getUserDetailPage(Model model, @PathVariable long id) {
         model.addAttribute("id", id);
         model.addAttribute("user", this.userService.getUserById(id));
-        return "/admin/user/show";
+        return "/admin/user/detail";
     }
-    
 
     @RequestMapping("/admin/user/create") //GET
     public String getCreateUserPage(Model model){
         model.addAttribute("newUser", new User());
         return "/admin/user/create";
-    }
-
-    @RequestMapping("/admin/user")
-    public String getUserPage(Model model){
-        List<User> users = this.userService.getAllUsers();
-        System.out.println(">>> check" + users);
-        model.addAttribute("users", users);
-        return "/admin/user/table-user";
     }
 
     @RequestMapping(value = "/admin/user/create", method = RequestMethod.POST)
